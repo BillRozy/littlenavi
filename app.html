@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>LittleNavi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header>
+  </header>
+  <section id="naviapp">
+  </section>
+  <footer>
+  </footer>
+  <script type="text/template" id="display-view-template">
+    <div class="message"><%= message %></div>
+    <div class="go-button">Let's Ride</div>
+    <div class="geocoding-tools">
+      <input id="start-address" type="textbox" value="Sydney, NSW">
+      <input id="finish-address" type="textbox" value="Sydney, NSW">
+    </div>
+  </script>
+
+  <script type="text/template" id="status-list-template">
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="js/lib/underscore-min.js"></script>
+  <script src="js/lib/backbone-min.js"></script>
+  <script src="js/lib/backbone.localStorage.min.js"></script>
+  <script src="js/models/application.js"></script>
+  <script src="js/views/littlenavi.js"></script>
+  <script src="js/start.js"></script>
+</body>
+
+</html>

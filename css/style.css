@@ -1,0 +1,71 @@
+html, body{
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+header{
+  height: 100px;
+  width:100%;
+  background: pink;
+}
+
+section{
+  width:100%;
+  height: calc(100% - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.littlenavi-display{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width:80%;
+    min-height: 300px;
+    min-width: 300px;
+    max-height: 800px;
+    max-width: 800px;
+}
+
+.message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:50%;
+  font-size: 5em;
+  font-family: 'Verdana';
+  color: purple;
+}
+
+.go-button{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width:250px;
+  height:180px;
+  background: pink;
+  font-size: 2em;
+  font-family: 'Verdana';
+  color: white;
+}
+
+.geocoding-tools{
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  width:90%;
+  height:50%;
+  font-size: 2em;
+  font-family: 'Verdana';
+  color: black;
+}
+
+.displayed{
+  display: flex;
+}
