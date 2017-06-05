@@ -19,15 +19,14 @@ var LittleNavi = Backbone.View.extend({
 
     var $temp = $('<div class="littlenavi-display"></div>').html(this.template( this.model.attributes ));
     var $goBtn = $temp.find('.go-button');
-    var $geoTools = $temp.find('.geocoding-tools');
     switch(this.model.get('state')){
       case 'ride':
         $goBtn.toggleClass('displayed', false);
-        $geoTools.toggleClass('displayed', true);
+        $temp.append(app.currentRoute.render().el);
         break;
       case 'init':
         $goBtn.toggleClass('displayed', true);
-        $geoTools.toggleClass('displayed', false);
+        app.currentRoute.$el.remove();
         break;
     }
     this.$el.empty().append($temp);
@@ -35,13 +34,7 @@ var LittleNavi = Backbone.View.extend({
   },
 
   changeStateToRide: function() {
-    this.$el.fadeOut(500, () => {
-      this.model.set({state: 'ride', message: 'Choose your route now'});
-      this.render();
-      this.$el.fadeIn(500);
-    });
-
-
+    app.router.navigate('#buildroute', {trigger: true});
   }
 
 });

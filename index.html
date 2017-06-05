@@ -18,20 +18,21 @@
   <script type="text/template" id="display-view-template">
     <div class="message"><%= message %></div>
     <div class="go-button">Let's Ride</div>
-    <div class="geocoding-tools">
-      <input id="start-address" type="textbox" value="Sydney, NSW">
-      <input id="finish-address" type="textbox" value="Sydney, NSW">
-    </div>
   </script>
 
-  <script type="text/template" id="status-list-template">
+  <script type="text/template" id="route-view-template">
+      <input id="start-address" type="textbox" value="<%= origin %>">
+      <input id="finish-address" type="textbox" value="<%= dest %>">
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
   <script src="js/lib/backbone.localStorage.min.js"></script>
   <script src="js/models/application.js"></script>
+  <script src="js/models/route.js"></script>
   <script src="js/views/littlenavi.js"></script>
+  <script src="js/views/routeview.js"></script>
+  <script src="js/routers/router.js"></script>
   <script src="js/start.js"></script>
 </body>
 
