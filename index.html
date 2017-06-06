@@ -6,6 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>LittleNavi</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+  integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+  crossorigin=""/>
 </head>
 
 <body>
@@ -20,20 +23,32 @@
     <div class="go-button">Let's Ride</div>
   </script>
 
-  <script type="text/template" id="route-view-template">
-      <input id="start-address" type="textbox" value="<%= origin %>">
-      <input id="finish-address" type="textbox" value="<%= dest %>">
+  <script type="text/template" id="map-view-template">
+    <div class="geocoding-tools">
+      <input id="start-address" type="textbox" value="<%= origin %>" placeholder='Точка отправления' autofocus>
+      <input id="finish-address" type="textbox" value="<%= dest %>" placeholder='Точка назначения'>
+    </div>
+      <div id="mapid"></div>
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="js/lib/underscore-min.js"></script>
   <script src="js/lib/backbone-min.js"></script>
   <script src="js/lib/backbone.localStorage.min.js"></script>
   <script src="js/models/application.js"></script>
-  <script src="js/models/route.js"></script>
+  <script src="js/models/maplayer.js"></script>
   <script src="js/views/littlenavi.js"></script>
-  <script src="js/views/routeview.js"></script>
+  <script src="js/views/mapview.js"></script>
   <script src="js/routers/router.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+   crossorigin=""></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.2/leaflet-geocoder-mapzen.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.2/leaflet-geocoder-mapzen.js"></script>
+   <link rel="stylesheet" href="css/leaflet-routing-machine.css" />
+   <script src="js/lib/leaflet-routing-machine.min.js"></script>
   <script src="js/start.js"></script>
+
 </body>
 
 </html>

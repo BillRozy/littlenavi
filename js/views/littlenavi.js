@@ -13,6 +13,7 @@ var LittleNavi = Backbone.View.extend({
 
   initialize: function() {
     this.listenTo(this.model, 'change', this.render);
+
   },
 
   render: function() {
@@ -22,14 +23,15 @@ var LittleNavi = Backbone.View.extend({
     switch(this.model.get('state')){
       case 'ride':
         $goBtn.toggleClass('displayed', false);
-        $temp.append(app.currentRoute.render().el);
+        $temp.append(app.map.render().el);
         break;
       case 'init':
         $goBtn.toggleClass('displayed', true);
-        app.currentRoute.$el.remove();
+        app.map.$el.remove();
         break;
     }
     this.$el.empty().append($temp);
+    app.map.delegateEvents();
     return this;
   },
 

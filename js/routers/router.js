@@ -17,11 +17,6 @@ var NaviRouter = Backbone.Router.extend({
     },
 
     showStarterPage: function(){
-
-      if(!$.contains($('#naviapp'), app.littlenavi.el)){
-        app.littlenavi.render().$el.hide();
-        $('#naviapp').append(app.littlenavi.render().$el);
-      }
       app.littlenavi.$el.fadeOut(500, () => {
         app.littlenavi.model.set({state: 'init', message: 'Hello'});
         app.littlenavi.render();
@@ -33,7 +28,9 @@ var NaviRouter = Backbone.Router.extend({
       app.littlenavi.$el.fadeOut(500, () => {
         app.littlenavi.model.set({state: 'ride', message: 'Choose your route now'});
         app.littlenavi.render();
-        app.littlenavi.$el.fadeIn(500);
+        app.littlenavi.$el.fadeIn(500, () => {
+          app.map.trigger('map:appear');
+        });
       });
     },
 
