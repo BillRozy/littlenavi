@@ -8,7 +8,9 @@ var MapView = Backbone.View.extend({
 
   // The DOM events specific to an item.
   events: {
-    'input input': 'checkInputField'
+    'input input': 'validateAndFly',
+    'keyup input': 'callOnEnter',
+    'click #apply-route-btn': 'applyRoute'
   },
 
   initialize: function() {
@@ -32,51 +34,92 @@ var MapView = Backbone.View.extend({
     $(el).toggleClass('hasError', hasError);
   },
 
+  waypointsToArray: function(waypoints){
+    let array = [];
+    if(waypoints && waypoints.length > 0){
+      waypoints.forEach(function(obj, i, arr){
+        array.push([obj.latLng.lat, obj.latLng.lng]);
+      })
+    }
+    return array;
+  },
+
+  callOnEnter: function(e){
+    if (e.keyCode == 13) {
+      this.applyRoute();
+    }
+  },
+
   showRoute: function(){
     let origin = this.model.get('origin');
     let dest = this.model.get('dest');
     if(this.machineRoute){
-      this.machineRoute.setWaypoints({
-        waypoints: [
-          L.latLng(origin[0], origin[1]),
-          L.latLng(dest[0], dest[1])
-        ]
-      }).route();
-    }else{
-      this.machineRoute = L.Routing.control({
-        waypoints: [
-          L.latLng(origin[0], origin[1]),
-          L.latLng(dest[0], dest[1])
-        ],
-        router: L.Routing.mapbox('pk.eyJ1IjoiYmlsbHJvenkiLCJhIjoiY2l4OG5zbWJ0MDA0bDJ0c2J1YzJid2FrNCJ9.0ouNSG8VeWn-H2qWV1Lf7A')
-      });
-      this.machineRoute.addTo(this.map);
+      this.machineRoute.remove();
     }
+    this.machineRoute = L.Routing.control({
+      waypoints: [
+        L.latLng(origin[0], origin[1]),
+        L.latLng(dest[0], dest[1])
+      ],
+      router: L.Routing.mapbox('pk.eyJ1IjoiYmlsbHJvenkiLCJhIjoiY2l4OG5zbWJ0MDA0bDJ0c2J1YzJid2FrNCJ9.0ouNSG8VeWn-H2qWV1Lf7A')
+    });
+    this.machineRoute.on('routesfound', () => {
+      let waypoints = this.machineRoute.getWaypoints();
+      this.map.fitBounds(this.waypointsToArray(waypoints));
+    })
+    this.machineRoute.addTo(this.map);
+    this.map.fitBounds([origin, dest]);
   },
 
   checkIfCanShowRoute: function() {
     return this.startmarker.marker && this.finishmarker.marker;
   },
 
-  checkInputField: function(e){
-    let val = e.currentTarget.value;
+  validateAndFly: function(e) {
+    let test = this.validateInput(e.currentTarget);
+    if(test){
+      this.flyTo(this.strLatLonToArray(test));
+    }
+  },
+
+  validateInput: function(field){
+    let val = field.value;
     if(this.checkIfIsLatLon(val)){
-      this.setFieldErrored(e.currentTarget ,false);
-      let latlon = this.strLatLonToArray(val);
-      this.model.set((e.currentTarget.id === 'start-address') ? 'origin' : 'dest', latlon);
-      this.flyTo(latlon);
-      let whatmarker = (e.currentTarget.id === 'start-address') ? this.startmarker : this.finishmarker;
-      if(whatmarker.marker != null){
-        whatmarker.marker.setLatLng(latlon);
+        this.setFieldErrored(field , false);
+        return val;
+    }else{
+      this.setFieldErrored(field , true);
+      return null;
+    }
+  },
+
+  applyRoute: function(){
+    let startField = document.getElementById('start-address');
+    let finishField = document.getElementById('finish-address');
+    let startval = this.validateInput(startField);
+    let finishval = this.validateInput(finishField);
+    if(startval && finishval){
+      let startLatLng = this.strLatLonToArray(startval);
+      let finishLatLng = this.strLatLonToArray(finishval);
+      this.model.set({'origin': startLatLng, 'dest': finishLatLng});
+
+      if(this.startmarker.marker != null){
+        this.startmarker.marker.setLatLng(startLatLng);
       }else{
-        whatmarker.marker = L.marker(latlon);
-        whatmarker.marker.addTo(this.map);
+        this.startmarker.marker = L.marker(startLatLng);
+        this.startmarker.marker.addTo(this.map);
+      }
+      if(this.finishmarker.marker != null){
+        this.finishmarker.marker.setLatLng(finishLatLng);
+      }else{
+        this.finishmarker.marker = L.marker(finishLatLng);
+        this.finishmarker.marker.addTo(this.map);
+      }
+      if(this.checkIfCanShowRoute()){
+        this.showRoute();
       }
     }else{
-      this.setFieldErrored(e.currentTarget, true);
-    }
-    if(this.checkIfCanShowRoute()){
-      this.showRoute();
+      console.log("please, insert correct input data");
     }
   },
 

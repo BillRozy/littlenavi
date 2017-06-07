@@ -18,7 +18,7 @@ var LittleNavi = Backbone.View.extend({
 
   render: function() {
 
-    var $temp = $('<div class="littlenavi-display"></div>').html(this.template( this.model.attributes ));
+    var $temp = $('<div></div>').html(this.template( this.model.attributes ));
     var $goBtn = $temp.find('.go-button');
     switch(this.model.get('state')){
       case 'ride':
