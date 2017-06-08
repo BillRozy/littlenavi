@@ -8,6 +8,8 @@ var MapView = Backbone.View.extend({
 
   // The DOM events specific to an item.
   events: {
+    'focusin input': 'handleFocusIn',
+    'focusout input': 'handleFocusOut',
     'input input': 'validateAndFly',
     'keyup input': 'callOnEnter',
     'click #apply-route-btn': 'applyRoute'
@@ -18,6 +20,7 @@ var MapView = Backbone.View.extend({
 
     _.extend(this, Backbone.Events);
     this.on("map:appear", this.renderMap);
+    this.on("map:refresh", this.refreshMap);
     this.latlonRegExp = /^([-+]?[1-8]?\d(?:\.\d+)?|90(?:\.0+)?),\s*([-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?))$/;
     this.startmarker = {id: 'start-address', marker: null};
     this.finishmarker = {id: 'finish-address', marker: null};
@@ -28,6 +31,31 @@ var MapView = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template( this.model.attributes ));
     return this;
+  },
+
+  handleFocusIn: function(e) {
+    let btn = $('#apply-route-btn');
+    switch(e.currentTarget.id){
+      case "start-address":
+        btn.toggleClass('onStart', true);
+        break;
+      case "finish-address":
+        btn.toggleClass('onFinish', true);
+        break;
+    }
+    app.littlenavi.trigger('map:defocus');
+  },
+
+  handleFocusOut: function(e) {
+    let btn = $('#apply-route-btn');
+    switch(e.currentTarget.id){
+      case "start-address":
+        btn.toggleClass('onStart', false);
+        break;
+      case "finish-address":
+        btn.toggleClass('onFinish', false);
+        break;
+    }
   },
 
   setFieldErrored: function(el ,hasError){
@@ -46,6 +74,7 @@ var MapView = Backbone.View.extend({
 
   callOnEnter: function(e){
     if (e.keyCode == 13) {
+      $(':focus').blur();
       this.applyRoute();
     }
   },
@@ -69,6 +98,10 @@ var MapView = Backbone.View.extend({
     })
     this.machineRoute.addTo(this.map);
     this.map.fitBounds([origin, dest]);
+  },
+
+  refitRouteBounds: function() {
+    this.map.fitBounds([this.model.get('origin'), this.model.get('dest')]);
   },
 
   checkIfCanShowRoute: function() {
@@ -116,6 +149,7 @@ var MapView = Backbone.View.extend({
         this.finishmarker.marker.addTo(this.map);
       }
       if(this.checkIfCanShowRoute()){
+        app.littlenavi.trigger('map:focus');
         this.showRoute();
       }
     }else{
@@ -137,6 +171,14 @@ var MapView = Backbone.View.extend({
 
   flyTo: function(latlonArr){
     this.map.panTo([latlonArr[0], latlonArr[1]])
+  },
+
+  refreshMap: function() {
+    this.map.invalidateSize();
+    this.refitRouteBounds();
+    $('#mapid').css({
+      'filter': ''
+    });
   },
 
   renderMap: function() {
