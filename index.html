@@ -25,9 +25,17 @@
 
   <script type="text/template" id="map-view-template">
     <div class="geocoding-tools">
-      <input id="start-address" type="textbox" value="<%= origin %>" placeholder='Точка отправления' autofocus>
+      <div style="position: relative">
+        <input id="start-address" type="textbox" value="<%= origin %>" placeholder='Точка отправления' autofocus>
+        <ul class="dropping-list" id="start-address-list">
+        </ul>
+      </div>
       <div id="apply-route-btn" class="round-button"></div>
-      <input id="finish-address" type="textbox" value="<%= dest %>" placeholder='Точка назначения'>
+      <div style="position: relative">
+        <input id="finish-address" type="textbox" value="<%= dest %>" placeholder='Точка назначения'>
+        <ul class="dropping-list" id="finish-address-list">
+        </ul>
+      </div>
     </div>
       <div id="mapid"></div>
   </script>
@@ -44,10 +52,14 @@
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
    integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
    crossorigin=""></script>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.2/leaflet-geocoder-mapzen.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.2/leaflet-geocoder-mapzen.js"></script>
    <link rel="stylesheet" href="css/leaflet-routing-machine.css" />
    <script src="js/lib/leaflet-routing-machine.min.js"></script>
+   <!-- Load Esri Leaflet from CDN -->
+   <script src="https://unpkg.com/esri-leaflet@2.0.8"></script>
+
+   <!-- Esri Leaflet Geocoder -->
+   <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.4/dist/esri-leaflet-geocoder.css">
+   <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.4"></script>
   <script src="js/start.js"></script>
 
 </body>

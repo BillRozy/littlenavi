@@ -109,10 +109,33 @@ var MapView = Backbone.View.extend({
   },
 
   validateAndFly: function(e) {
+    let self = this;
+    this.geocoder.geocode().text(e.currentTarget.value).run(function(err, results, response){
+        console.log(results);
+        self.fillGeoList(e.currentTarget.id, results.results);
+    });
     let test = this.validateInput(e.currentTarget);
     if(test){
       this.flyTo(this.strLatLonToArray(test));
     }
+  },
+
+  fillGeoList: function(inputId, results) {
+
+    let list = (inputId === "start-address") ? $('#start-address-list') : $('#finish-address-list');
+    list.empty();
+    let self = this;
+    results.forEach(function(result, ind, arr){
+      let li = $('<li>' + result.text  + '</li>');
+      li.on('mouseover', function() {
+        self.flyTo([result.latlng.lat, result.latlng.lng]);
+      });
+      li.on('click', function(e) {
+          console.log("setting modfel");
+          self.model.set({'origin': [result.latlng.lat, result.latlng.lng]});
+      });
+      list.append(li);
+    })
   },
 
   validateInput: function(field){
@@ -191,8 +214,6 @@ var MapView = Backbone.View.extend({
 			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		id: 'mapbox.streets'
   }).addTo(this.map);
-    this.geocoder = L.control.geocoder('mapzen-h33t24L', {
-  focus: false // this can also written as {lat: 50.5, lon: 30.5} or L.latLng(50.5, 30.5)
-});
+  this.geocoder = L.esri.Geocoding;
   }
 });

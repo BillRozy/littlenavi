@@ -22,6 +22,8 @@ section{
 .littlenavi-display{
   height: 100%;
   width:100%;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .littlenavi-wrapper{
@@ -52,6 +54,7 @@ section{
 }
 
 .go-button{
+  box-sizing: border-box;
   display: none;
   justify-content: center;
   align-items: center;
@@ -61,6 +64,12 @@ section{
   font-size: 2em;
   font-family: 'Verdana';
   color: white;
+}
+
+.go-button:hover{
+  cursor: pointer;
+  border: 2px solid purple;
+  transition: 0.1s;
 }
 
 .map-view{
@@ -80,9 +89,10 @@ section{
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height:120px;
-  max-width: 650px;
+  height:100px;
+  max-width: 700px;
   transition: 0.3s;
+  top:0;
 }
 
 .map-view input{
@@ -93,6 +103,7 @@ section{
   border: 2px solid purple;
   font-size: 0.8em;
   font-family: 'Verdana';
+  text-align: center;
 }
 
 .displayed{
@@ -112,8 +123,8 @@ section{
 
 .round-button{
   background: url('../images/car-xxl.png') purple no-repeat 50% 50%;
-  background-size: 40%;
-  width:120px;
+  background-size: 30%;
+  width:160px;
   height:60px;
   border-radius: 20px;
   transition:0.3s;
@@ -122,17 +133,52 @@ section{
 .round-button:hover{
   cursor: pointer;
   background: url('../images/car-xxl.png') pink no-repeat 50% 50%;
-  background-size: 30%;
+  background-size: 20%;
 }
 
 .round-button.onStart{
   cursor: pointer;
   background: url('../images/car-xxl.png') purple no-repeat 20% 50%;
-  background-size: 30%;
+  background-size: 20%;
 }
 
 .round-button.onFinish{
   cursor: pointer;
   background: url('../images/car-xxl.png') purple no-repeat 80% 50%;
-  background-size: 30%;
+  background-size: 20%;
+}
+
+.map-view input:focus ~ .dropping-list{
+  display:block;
+}
+
+.dropping-list{
+  display: none;
+  list-style-type:none;
+  position: absolute;
+  top: 75px;
+  left:0;
+  background: white;
+  z-index: 1000;
+-webkit-margin-before: 0em;
+-webkit-margin-after: 0em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.dropping-list li{
+  box-sizing: border-box;
+  padding: 4px;
+  text-decoration: none;
+  font-size: 0.5em;
+  border-bottom: 1px pink solid;
+}
+
+.dropping-list li:hover{
+  cursor: pointer;
+  background: pink;
+  color: white;
 }

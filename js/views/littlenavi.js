@@ -53,6 +53,9 @@ var LittleNavi = Backbone.View.extend({
         'height': '0px',
         'opacity': '0'
       });
+      this.$el.find('.geocoding-tools').css({
+        'opacity':'0'
+      });
       setTimeout(function(){
         self.$el.find('#mapid').css({
           'width':'100%',
@@ -61,8 +64,12 @@ var LittleNavi = Backbone.View.extend({
           'min-width': '400px',
           'filter': 'blur(5px)'
         });
-        setTimeout(function(){ app.map.trigger('map:refresh');}, 350);
-      }, 350);
+        self.$el.find('.geocoding-tools').css({
+          'position':'absolute',
+          'opacity':'1'
+        });
+        setTimeout(function(){ app.map.trigger('map:refresh');}, 300);
+      }, 300);
     }
   },
 
@@ -77,13 +84,20 @@ var LittleNavi = Backbone.View.extend({
         'min-width': '',
         'filter': 'blur(5px)'
       });
+      this.$el.find('.geocoding-tools').css({
+        'opacity':'0'
+      });
       setTimeout(function(){
         self.$el.find('.message').css({
           'height': '200px',
           'opacity': '1'
         });
-        setTimeout(function(){ app.map.trigger('map:refresh');}, 350);
-      }, 350);
+        self.$el.find('.geocoding-tools').css({
+          'position' : '',
+          'opacity':'1'
+        });
+        setTimeout(function(){ app.map.trigger('map:refresh');}, 300);
+      }, 300);
 
     }
   }
