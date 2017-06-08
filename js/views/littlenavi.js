@@ -47,9 +47,14 @@ var LittleNavi = Backbone.View.extend({
 
   focusOnMap: function() {
     if(!this.isMapFocused){
+      var self = this;
       this.isMapFocused = true;
-      this.$el.find('.message').fadeOut(300, () => {
-        this.$el.find('#mapid').css({
+      this.$el.find('.message').css({
+        'height': '0px',
+        'opacity': '0'
+      });
+      setTimeout(function(){
+        self.$el.find('#mapid').css({
           'width':'100%',
           'height':'100%',
           'min-height': '400px',
@@ -57,12 +62,13 @@ var LittleNavi = Backbone.View.extend({
           'filter': 'blur(5px)'
         });
         setTimeout(function(){ app.map.trigger('map:refresh');}, 350);
-      });
+      }, 350);
     }
   },
 
   resetFocus: function() {
     if(this.isMapFocused){
+      let self = this;
       this.isMapFocused = false;
       this.$el.find('#mapid').css({
         'width':'80%',
@@ -71,9 +77,14 @@ var LittleNavi = Backbone.View.extend({
         'min-width': '',
         'filter': 'blur(5px)'
       });
-       this.$el.find('.message').fadeIn(300, function() {
-               app.map.trigger('map:refresh');
-       });
+      setTimeout(function(){
+        self.$el.find('.message').css({
+          'height': '200px',
+          'opacity': '1'
+        });
+        setTimeout(function(){ app.map.trigger('map:refresh');}, 350);
+      }, 350);
+
     }
   }
 
