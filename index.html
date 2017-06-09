@@ -15,12 +15,22 @@
   <header>
   </header>
   <section id="naviapp">
+    <div id="content"></div>
+    <div id="menu"></div>
   </section>
   <footer>
   </footer>
   <script type="text/template" id="display-view-template">
     <div class="message"><%= message %></div>
     <div class="go-button">Let's Ride</div>
+  </script>
+
+  <script type="text/template" id="recents-view-template">
+    <div class="title"><%= title %></div>
+  </script>
+
+  <script type="text/template" id="recent-view-template">
+    <div class="title"><%= title %></div>
   </script>
 
   <script type="text/template" id="map-view-template">
@@ -45,8 +55,11 @@
   <script src="js/lib/backbone.localStorage.min.js"></script>
   <script src="js/models/application.js"></script>
   <script src="js/models/maplayer.js"></script>
+  <script src="js/models/recent.js"></script>
+  <script src="js/collections/recents.js"></script>
   <script src="js/views/littlenavi.js"></script>
   <script src="js/views/mapview.js"></script>
+  <script src="js/views/recents.js"></script>
   <script src="js/routers/router.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"

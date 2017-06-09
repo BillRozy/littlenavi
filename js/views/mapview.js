@@ -25,6 +25,7 @@ var MapView = Backbone.View.extend({
     this.startmarker = {id: 'start-address', marker: null};
     this.finishmarker = {id: 'finish-address', marker: null};
     this.machineRoute = null;
+
   },
 
 
@@ -43,6 +44,9 @@ var MapView = Backbone.View.extend({
         btn.toggleClass('onFinish', true);
         break;
     }
+    $(e.currentTarget).siblings().css({
+      'height': 'auto'
+    })
     app.littlenavi.trigger('map:defocus');
   },
 
@@ -56,6 +60,11 @@ var MapView = Backbone.View.extend({
         btn.toggleClass('onFinish', false);
         break;
     }
+    setTimeout(function(){
+      $(e.currentTarget).siblings().css({
+        'height': '0px'
+      })
+    } , 150);
   },
 
   setFieldErrored: function(el ,hasError){
@@ -131,8 +140,15 @@ var MapView = Backbone.View.extend({
         self.flyTo([result.latlng.lat, result.latlng.lng]);
       });
       li.on('click', function(e) {
-          console.log("setting modfel");
-          self.model.set({'origin': [result.latlng.lat, result.latlng.lng]});
+          if(inputId === "start-address"){
+            self.model.set({origin : [result.latlng.lat, result.latlng.lng]});
+            self.model.set({originName: li.html()});
+          }else{
+            self.model.set({dest : [result.latlng.lat, result.latlng.lng]});
+            self.model.set({destName: li.html()});
+          }
+          self.setFieldErrored(document.getElementById(inputId), false);
+          $('#' + inputId).val(li.html());
       });
       list.append(li);
     })
@@ -150,31 +166,36 @@ var MapView = Backbone.View.extend({
   },
 
   applyRoute: function(){
-    let startField = document.getElementById('start-address');
-    let finishField = document.getElementById('finish-address');
-    let startval = this.validateInput(startField);
-    let finishval = this.validateInput(finishField);
-    if(startval && finishval){
-      let startLatLng = this.strLatLonToArray(startval);
-      let finishLatLng = this.strLatLonToArray(finishval);
-      this.model.set({'origin': startLatLng, 'dest': finishLatLng});
+    if(this.model.get('origin') && this.model.get('dest')){
+       let startLatLng = this.model.get('origin');
+       let finishLatLng = this.model.get('dest');
+       if(this.startmarker.marker != null){
+         this.startmarker.marker.setLatLng(startLatLng);
+       }else{
+         this.startmarker.marker = L.marker(startLatLng);
+         this.startmarker.marker.addTo(this.map);
+       }
+       if(this.finishmarker.marker != null){
+         this.finishmarker.marker.setLatLng(finishLatLng);
+       }else{
+         this.finishmarker.marker = L.marker(finishLatLng);
+         this.finishmarker.marker.addTo(this.map);
+       }
 
-      if(this.startmarker.marker != null){
-        this.startmarker.marker.setLatLng(startLatLng);
-      }else{
-        this.startmarker.marker = L.marker(startLatLng);
-        this.startmarker.marker.addTo(this.map);
-      }
-      if(this.finishmarker.marker != null){
-        this.finishmarker.marker.setLatLng(finishLatLng);
-      }else{
-        this.finishmarker.marker = L.marker(finishLatLng);
-        this.finishmarker.marker.addTo(this.map);
-      }
-      if(this.checkIfCanShowRoute()){
-        app.littlenavi.trigger('map:focus');
-        this.showRoute();
-      }
+       let recent = new app.Recent({
+         origin: startLatLng,
+         dest: finishLatLng,
+         originName: this.model.get('originName'),
+         destName: this.model.get('destName')
+       });
+       recent.save();
+       app.Recents.add(recent);
+
+       if(this.checkIfCanShowRoute()){
+         app.littlenavi.trigger('map:focus');
+         this.showRoute();
+       }
+
     }else{
       console.log("please, insert correct input data");
     }
@@ -194,6 +215,14 @@ var MapView = Backbone.View.extend({
 
   flyTo: function(latlonArr){
     this.map.panTo([latlonArr[0], latlonArr[1]])
+  },
+
+  hideItinerary: function() {
+    this.machineRoute.hide();
+  },
+
+  showItinerary: function() {
+    this.machineRoute.show();
   },
 
   refreshMap: function() {

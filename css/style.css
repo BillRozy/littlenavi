@@ -90,18 +90,19 @@ section{
   align-items: center;
   width: 100%;
   height:100px;
-  max-width: 700px;
+  max-width: 750px;
   transition: 0.3s;
   top:0;
 }
 
 .map-view input{
+  box-sizing: border-box;
   padding: 5px;
-  width:200px;
-  height:60px;
+  width:250px;
+  height:50px;
   border-radius: 10px;
   border: 2px solid purple;
-  font-size: 0.8em;
+  font-size: 0.6em;
   font-family: 'Verdana';
   text-align: center;
 }
@@ -148,15 +149,16 @@ section{
   background-size: 20%;
 }
 
-.map-view input:focus ~ .dropping-list{
-  display:block;
-}
+/*.map-view input:focus ~ .dropping-list{
+  height: auto;
+}*/
 
 .dropping-list{
-  display: none;
+  height: 0px;
+  width: 100%;
   list-style-type:none;
   position: absolute;
-  top: 75px;
+  top: 55px;
   left:0;
   background: white;
   z-index: 1000;
@@ -167,6 +169,7 @@ section{
 -webkit-padding-start: 0px;
   overflow-y: auto;
   max-height: 400px;
+  transition: 0.5s;
 }
 
 .dropping-list li{
@@ -181,4 +184,29 @@ section{
   cursor: pointer;
   background: pink;
   color: white;
+}
+
+#naviapp{
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+}
+
+#recents-view-template{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px pink solid;
+}
+
+#content{
+  flex-grow: 5;
+  flex-basis: 800px;
+  height:100%;
+}
+
+#menu{
+  box-sizing: border-box;
+  height:100%;
 }

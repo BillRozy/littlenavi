@@ -77,6 +77,7 @@ var LittleNavi = Backbone.View.extend({
     if(this.isMapFocused){
       let self = this;
       this.isMapFocused = false;
+      app.map.hideItinerary();
       this.$el.find('#mapid').css({
         'width':'80%',
         'height':'400px',
